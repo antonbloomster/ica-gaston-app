@@ -4285,6 +4285,8 @@ function showScreen(id) {
   updateStatusBar(id);
   // v3: Auto-navigate from processing to result
   if (id === 'screen-care-processing') startAutoNavigation();
+  // Autoplay videos on the newly active screen
+  next.querySelectorAll('video[autoplay]').forEach(v => { v.play().catch(() => {}); });
 }
 
 function updateTabs(screenId) {
@@ -5400,6 +5402,26 @@ function htToggleGroup(summaryRow) {
         m.style.display = vis ? 'block' : 'none';
       });
     });
+  });
+})();
+
+/* ===== AUTOPLAY VIDEO FIX ===== */
+/* Browsers block autoplay until user interacts with the page.
+   After the first tap/click, play all muted autoplay videos. */
+(function() {
+  function playAllAutoplayVideos() {
+    document.querySelectorAll('video[autoplay]').forEach(function(v) {
+      if (v.paused && v.muted) v.play().catch(function() {});
+    });
+  }
+  // Try immediately (works if browser allows muted autoplay)
+  document.addEventListener('DOMContentLoaded', playAllAutoplayVideos);
+  // Also try after first user interaction (needed for stricter browsers)
+  ['click', 'touchstart'].forEach(function(evt) {
+    document.addEventListener(evt, function onInteract() {
+      playAllAutoplayVideos();
+      document.removeEventListener(evt, onInteract);
+    }, { once: true });
   });
 })();
 </script>
