@@ -3937,6 +3937,9 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 
 
 <script>
+/* Enable :active pseudo-class on iOS Safari (requires touchstart listener) */
+document.addEventListener('touchstart', function() {}, {passive: true});
+
 /* ===== ONBOARDING ===== */
 (function() {
   // Hide app UI during onboarding
@@ -5161,6 +5164,12 @@ function switchMockup(target) {
     stdContent.classList.add('hidden');
     famContent.classList.add('active');
     optFam.classList.add('current');
+    // Re-trigger v5-anim on family items (iOS skips animations on display:none elements)
+    famContent.querySelectorAll('.v5-anim').forEach(function(el) {
+      el.style.animation = 'none';
+      el.offsetHeight; // force reflow
+      el.style.animation = '';
+    });
   } else {
     optStd.classList.add('current');
   }
