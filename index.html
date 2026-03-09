@@ -480,9 +480,9 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 .camera-view .cam-circle .mi { font-size: 64px; color: rgba(255,255,255,0.3); }
 .camera-view .cam-hint { color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 16px; text-align: center; }
 .cam-shutter-row { display: flex; justify-content: center; gap: 24px; padding: 0 20px 20px; align-items: center; }
-.cam-shutter { width: 68px; height: 68px; border-radius: 50%; background: white; border: 4px solid var(--care-accent); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; box-shadow: var(--shadow-md); }
+.cam-shutter { width: 68px; height: 68px; border-radius: 50%; background: white; border: 4px solid var(--gaston-navy); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; box-shadow: var(--shadow-md); }
 .cam-shutter:active { transform: scale(0.9); }
-.cam-shutter-inner { width: 54px; height: 54px; border-radius: 50%; background: var(--care-accent); }
+.cam-shutter-inner { width: 54px; height: 54px; border-radius: 50%; background: var(--gaston-navy); }
 
 /* Step Progress Bar */
 .step-progress { padding: 0 20px 16px; }
@@ -1474,8 +1474,11 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 
 /* Progress track */
 .ob-progress { position: absolute; top: calc(var(--safe-top) + 8px); left: 28px; right: 28px; z-index: 120; display: flex; gap: 6px; }
-.ob-seg { flex: 1; height: 3px; border-radius: 2px; background: var(--cream); transition: all 0.5s cubic-bezier(.4,0,.2,1); }
-.ob-seg.done, .ob-seg.active { background: var(--gaston-navy); }
+.ob-seg { flex: 1; height: 3px; border-radius: 2px; background: var(--cream); transition: all 0.5s cubic-bezier(.4,0,.2,1); position: relative; overflow: hidden; }
+.ob-seg.done { background: var(--gaston-navy); }
+.ob-seg.active { background: var(--gaston-navy); }
+.ob-seg.filling { background: var(--cream); }
+.ob-seg.filling::after { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: var(--seg-fill, 0%); background: var(--gaston-navy); border-radius: 2px; }
 
 /* Name screen */
 .ob-name { background: var(--warm-white); }
@@ -1519,7 +1522,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 .ob-spinner {
   width: 28px; height: 28px; margin-left: auto; flex-shrink: 0;
   border-radius: 50%; border: 2px solid transparent;
-  border-top-color: var(--gaston-blue); border-right-color: var(--gaston-blue);
+  border-top-color: var(--gaston-navy); border-right-color: var(--gaston-navy);
   animation: obSpin 1s linear infinite;
 }
 @keyframes obSpin { to { transform: rotate(360deg); } }
@@ -1718,7 +1721,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 
     <!-- Analyzing -->
     <div class="ob-screen ob-analyze" id="ob-analyze">
-      <div class="ob-progress"><div class="ob-seg done"></div><div class="ob-seg done"></div><div class="ob-seg active"></div><div class="ob-seg"></div></div>
+      <div class="ob-progress"><div class="ob-seg done"></div><div class="ob-seg done"></div><div class="ob-seg filling" id="ob-analyze-seg"></div><div class="ob-seg"></div></div>
       <div class="ob-analyze-header">
         <h2 id="ob-analyze-title">Analyserar <span class="pn">Sigge</span></h2>
         <p>Vi lär känna ditt husdjur</p>
@@ -2655,7 +2658,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
           <div class="hp-metrics">
             <div class="hp-metric"><div class="hp-metric-value" style="color: var(--status-green);">5/5</div><div class="hp-metric-label">Energi</div></div>
             <div class="hp-metric"><div class="hp-metric-value">28 kg</div><div class="hp-metric-label">Vikt (BCS 5)</div></div>
-            <div class="hp-metric"><div class="hp-metric-value">6</div><div class="hp-metric-label">Incheckningar</div></div>
+            <div class="hp-metric"><div class="hp-metric-value">3 år</div><div class="hp-metric-label">Ålder</div></div>
           </div>
         </div>
 
@@ -2680,7 +2683,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
         <!-- Last check-in summary -->
         <div class="section-header"><h2>Senaste incheckning</h2></div>
         <div class="content-pad">
-          <div class="narrative-card">
+          <div class="narrative-card" style="margin-left: 0; margin-right: 0;">
             <div class="narrative-badge green"><span class="mi" style="font-size: 14px;">check_circle</span> Ser bra ut</div>
             <div class="narrative-text"><span class="pn">Sigge</span> ser fortsatt frisk och energisk ut. Vikt och pälskvalitet är stabila jämfört med baslinjen. Inga förändringar som kräver åtgärd.</div>
             <div class="narrative-ai-label"><span class="mi" style="font-size: 14px;">auto_awesome</span> AI-genererad hälsoberättelse · 5 februari 2026</div>
@@ -3411,7 +3414,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
       </div>
 
       <div class="content-pad">
-        <div class="card" style="cursor: default;">
+        <div class="card" style="cursor: default; transform: none !important; box-shadow: var(--shadow-sm) !important;">
           <div style="font-family: 'ICA Rubrik', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 12px;"><span class="pns">Sigges</span> profil skickas med</div>
           <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--cream);"><span style="font-size: 13px; color: var(--warm-gray);">Namn</span><span style="font-size: 13px; font-weight: 600;"><span class="pn">Sigge</span></span></div>
           <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--cream);"><span style="font-size: 13px; color: var(--warm-gray);">Ras</span><span style="font-size: 13px; font-weight: 600;">Dalmatiner</span></div>
@@ -4081,6 +4084,23 @@ document.addEventListener('touchstart', function() {}, {passive: true});
   function obRunAnalysis() {
     var steps = ['obs1', 'obs2', 'obs3', 'obs4'];
     var entered = 0;
+    // Get the third progress segment and start smooth fill
+    var progressSeg = document.getElementById('ob-analyze-seg');
+    progressSeg.style.setProperty('--seg-fill', '0%');
+    // Total analysis time: 480ms enter + 300ms delay + 4×1100ms steps + 3×200ms gaps = ~5780ms
+    requestAnimationFrame(function() {
+      progressSeg.style.transition = 'none';
+      progressSeg.style.setProperty('--seg-fill', '0%');
+      requestAnimationFrame(function() {
+        progressSeg.querySelector('::after') ; // force reflow
+        progressSeg.offsetHeight; // force reflow
+        var style = document.createElement('style');
+        style.id = 'ob-seg-anim';
+        style.textContent = '#ob-analyze-seg::after { transition: width 5.8s linear !important; width: 100% !important; }';
+        document.head.appendChild(style);
+      });
+    });
+
     function enterNext() {
       if (entered < steps.length) {
         document.getElementById(steps[entered]).classList.add('entered');
@@ -4151,6 +4171,12 @@ document.addEventListener('touchstart', function() {}, {passive: true});
     overlay.querySelectorAll('.ob-topbar').forEach(function(tb) {
       tb.classList.remove('fade-out');
     });
+
+    // Reset analysis stepper fill
+    var progressSeg = document.getElementById('ob-analyze-seg');
+    if (progressSeg) { progressSeg.style.setProperty('--seg-fill', '0%'); }
+    var animStyle = document.getElementById('ob-seg-anim');
+    if (animStyle) animStyle.remove();
 
     // Reset analysis steps
     ['obs1','obs2','obs3','obs4'].forEach(function(id) {
