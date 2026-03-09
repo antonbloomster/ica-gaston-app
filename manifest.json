@@ -1,7 +1,7 @@
 {
   "name": "ICA Gaston",
   "short_name": "Gaston",
-  "start_url": "/",
+  "start_url": "/ica-gaston-app/",
   "display": "standalone",
   "background_color": "#FAF8F5",
   "theme_color": "#1B2A4A",
