@@ -225,7 +225,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 .pillar-badge { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; border-radius: 50%; background: var(--ica-red); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 
 /* FEED styles — Sunset Bloom Kost */
-.feed-hero-card { margin: 0; background: linear-gradient(160deg, #fef6f0 0%, #fceee2 50%, #f8e0cc 100%); border-radius: var(--radius-xl); padding: 24px 20px; position: relative; overflow: hidden; box-shadow: 0 4px 28px rgba(200, 130, 90, 0.1); }
+.feed-hero-card { margin: 0; background: linear-gradient(160deg, #fef6f0 0%, #fceee2 50%, #f8e0cc 100%); border-radius: var(--radius-xl); padding: 24px 20px; position: relative; overflow: hidden; box-shadow: 0 4px 28px rgba(200, 130, 90, 0.1); isolation: isolate; }
 .feed-hero-card::before { display: none; }
 .feed-hero-card .candy-blob { position: absolute; border-radius: 50%; z-index: 0; pointer-events: none; }
 .feed-hero-card .candy-blob:nth-child(1) { width: 180px; height: 180px; background: radial-gradient(circle, #e8a070 0%, #d88050 100%); top: -40px; right: -30px; filter: blur(40px); opacity: 0.4; }
@@ -422,7 +422,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 
 /* CARE specific styles */
 /* Dismissible Hero Cards — wrapper approach */
-.hero-dismiss-wrapper { overflow: hidden; margin: 8px 20px 16px; will-change: max-height, margin; }
+.hero-dismiss-wrapper { overflow: hidden; margin: 8px 20px 16px; will-change: max-height, margin; border-radius: var(--radius-xl); }
 .hero-dismiss-wrapper.fading .feed-hero-card,
 .hero-dismiss-wrapper.fading .care-hero-card {
   opacity: 0; transform: translateY(-6px) scale(0.98); pointer-events: none;
@@ -442,7 +442,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 .feed-hero-card .hero-close { color: #985830; }
 .care-hero-card .hero-close { color: #3a6828; }
 /* Care Hero — Sunset Bloom Hälsa */
-.care-hero-card { margin: 0; background: linear-gradient(160deg, #f2f8f0 0%, #e4f2de 50%, #d2eac6 100%); border-radius: var(--radius-xl); padding: 24px 20px; position: relative; overflow: hidden; box-shadow: 0 4px 28px rgba(100, 160, 70, 0.08); }
+.care-hero-card { margin: 0; background: linear-gradient(160deg, #f2f8f0 0%, #e4f2de 50%, #d2eac6 100%); border-radius: var(--radius-xl); padding: 24px 20px; position: relative; overflow: hidden; box-shadow: 0 4px 28px rgba(100, 160, 70, 0.08); isolation: isolate; }
 .care-hero-card::before { display: none; }
 .care-hero-card::after { display: none; }
 .care-hero-card .candy-blob { position: absolute; border-radius: 50%; z-index: 0; pointer-events: none; }
