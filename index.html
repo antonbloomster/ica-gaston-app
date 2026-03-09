@@ -663,6 +663,14 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 
 /* ===== V5 HOME SCREEN STYLES ===== */
 
+/* Home Sticky Pet Name Bar — appears when pet name scrolls off-screen */
+.home-sticky-bar { position: absolute; top: 0; left: 0; right: 0; z-index: 100; padding: calc(var(--safe-top) + 8px) 20px 12px; background: rgba(250,248,245,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(-100%); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; }
+.home-sticky-bar.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.home-sticky-bar .sticky-pet-name { font-family: 'ICA Rubrik', sans-serif; font-size: 22px; font-weight: 900; color: var(--gaston-navy); letter-spacing: -0.3px; line-height: 1; }
+.home-sticky-bar .sticky-chevron { font-size: 18px; color: var(--gaston-navy); width: 28px; height: 28px; border-radius: 50%; background: rgba(27,42,74,0.08); display: flex; align-items: center; justify-content: center; margin-left: 8px; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.home-sticky-bar .sticky-trigger { display: flex; align-items: center; cursor: pointer; -webkit-tap-highlight-color: transparent; position: relative; }
+.home-sticky-bar .sticky-trigger:active { opacity: 0.8; }
+
 /* Home Hero — Sticky video, content scrolls over */
 .home-hero-sticky { position: sticky; top: 0; width: 100%; height: 65vh; overflow: hidden; z-index: 0; }
 .home-hero-sticky video { width: 100%; height: 100%; object-fit: cover; }
@@ -684,7 +692,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 .pet-switch-trigger.open .pet-switch-chevron { transform: rotate(180deg); }
 
 /* Dropdown panel */
-.pet-switch-dropdown { position: absolute; top: calc(100% + 6px); left: 20px; right: 20px; background: white; border-radius: 20px; box-shadow: 0 8px 40px rgba(27,42,74,0.14), 0 2px 8px rgba(27,42,74,0.06); padding: 6px; z-index: 200; opacity: 0; transform: translateY(-6px) scale(0.97); transform-origin: top left; pointer-events: none; transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
+.pet-switch-dropdown { position: absolute; top: 0; left: 20px; right: 20px; background: white; border-radius: 20px; box-shadow: 0 8px 40px rgba(27,42,74,0.14), 0 2px 8px rgba(27,42,74,0.06); padding: 6px; z-index: 700; opacity: 0; transform: translateY(-6px) scale(0.97); transform-origin: top center; pointer-events: none; transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
 .pet-switch-dropdown.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
 
 .pet-switch-option { display: flex; align-items: center; gap: 14px; padding: 11px 12px; border-radius: 14px; cursor: pointer; transition: background 0.15s; }
@@ -707,7 +715,7 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
 .pet-switch-add-label { font-size: 14px; font-weight: 600; color: var(--warm-gray-dark); }
 
 /* Backdrop */
-.pet-switch-backdrop { position: fixed; top: -200vh; left: -200vw; width: 500vw; height: 500vh; z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.pet-switch-backdrop { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 650; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
 .pet-switch-backdrop.visible { opacity: 1; pointer-events: auto; }
 
 /* Health pill */
@@ -1746,6 +1754,46 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
     </div>
   </div>
 
+  <!-- ===== STICKY PET NAME BAR (appears on scroll) ===== -->
+  <div class="home-sticky-bar" id="homeStickyBar">
+    <div class="sticky-trigger" onclick="togglePetSwitch()">
+      <span class="sticky-pet-name pn">Sigge</span>
+      <span class="mi sticky-chevron">expand_more</span>
+    </div>
+  </div>
+
+  <!-- Pet switcher backdrop + dropdown (top level for z-index) -->
+  <div class="pet-switch-backdrop" id="petSwitchBackdrop" onclick="togglePetSwitch()"></div>
+  <div class="pet-switch-dropdown" id="petSwitchDropdown">
+    <div class="pet-switch-option selected" onclick="selectPet(this)">
+      <div class="pet-switch-opt-avatar" style="background: linear-gradient(135deg, #E8F5EE, #C8E6D5);">
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><span class="mi" style="font-size:22px;color:var(--care-accent);">pets</span></div>
+      </div>
+      <div class="pet-switch-opt-info">
+        <div class="pet-switch-opt-name"><span class="pn">Sigge</span></div>
+        <div class="pet-switch-opt-detail">Dalmatiner · 3 år</div>
+        <div class="pet-switch-opt-health" style="color: var(--status-green);"><span class="mi" style="font-size: 12px;">check_circle</span> Mår bra</div>
+      </div>
+      <span class="mi pet-switch-opt-check">check_circle</span>
+    </div>
+    <div class="pet-switch-option" style="cursor: default; pointer-events: none;">
+      <div class="pet-switch-opt-avatar" style="background: linear-gradient(135deg, #FCE4D0, #F5D0B5);">
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><span class="mi" style="font-size:22px;color:var(--feed-accent);">emoji_nature</span></div>
+      </div>
+      <div class="pet-switch-opt-info">
+        <div class="pet-switch-opt-name">Bella</div>
+        <div class="pet-switch-opt-detail">Katt · 5 år</div>
+        <div class="pet-switch-opt-health" style="color: var(--status-yellow);"><span class="mi" style="font-size: 12px;">warning</span> Vaccination snart</div>
+      </div>
+      <span class="mi pet-switch-opt-check">check_circle</span>
+    </div>
+    <div class="pet-switch-divider"></div>
+    <div class="pet-switch-add" onclick="togglePetSwitch()">
+      <div class="pet-switch-add-icon"><span class="mi" style="font-size: 20px; color: var(--warm-gray-light);">add</span></div>
+      <div class="pet-switch-add-label">Lägg till husdjur</div>
+    </div>
+  </div>
+
   <div class="screen-container">
 
     <!-- ============================================ -->
@@ -1821,41 +1869,6 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
               <span class="mi" style="font-size: 14px; color: var(--status-green);">check_circle</span>
               <span class="hp-status-text" style="color: var(--status-green);">Mår bra</span>
               <span class="hp-status-meta">· Senast: 28 feb</span>
-            </div>
-          </div>
-
-          <!-- Pet switcher backdrop + dropdown -->
-          <div class="pet-switch-backdrop" id="petSwitchBackdrop" onclick="togglePetSwitch()"></div>
-          <div class="pet-switch-dropdown" id="petSwitchDropdown">
-            <div class="pet-switch-option selected" onclick="selectPet(this)">
-              <div class="pet-switch-opt-avatar" style="background: linear-gradient(135deg, #E8F5EE, #C8E6D5);">
-                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><span class="mi" style="font-size:22px;color:var(--care-accent);">pets</span></div>
-              </div>
-              <div class="pet-switch-opt-info">
-                <div class="pet-switch-opt-name"><span class="pn">Sigge</span></div>
-                <div class="pet-switch-opt-detail">Dalmatiner · 3 år</div>
-                <div class="pet-switch-opt-health" style="color: var(--status-green);"><span class="mi" style="font-size: 12px;">check_circle</span> Mår bra</div>
-              </div>
-              <span class="mi pet-switch-opt-check">check_circle</span>
-            </div>
-
-            <div class="pet-switch-option" style="cursor: default; pointer-events: none;">
-              <div class="pet-switch-opt-avatar" style="background: linear-gradient(135deg, #FCE4D0, #F5D0B5);">
-                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><span class="mi" style="font-size:22px;color:var(--feed-accent);">emoji_nature</span></div>
-              </div>
-              <div class="pet-switch-opt-info">
-                <div class="pet-switch-opt-name">Bella</div>
-                <div class="pet-switch-opt-detail">Katt · 5 år</div>
-                <div class="pet-switch-opt-health" style="color: var(--status-yellow);"><span class="mi" style="font-size: 12px;">warning</span> Vaccination snart</div>
-              </div>
-              <span class="mi pet-switch-opt-check">check_circle</span>
-            </div>
-
-            <div class="pet-switch-divider"></div>
-
-            <div class="pet-switch-add" onclick="togglePetSwitch()">
-              <div class="pet-switch-add-icon"><span class="mi" style="font-size: 20px; color: var(--warm-gray-light);">add</span></div>
-              <div class="pet-switch-add-label">Lägg till husdjur</div>
             </div>
           </div>
         </div>
@@ -4098,7 +4111,12 @@ body { font-family: 'ICA Text Ny', -apple-system, 'SF Pro Text', sans-serif; bac
     var s = document.getElementById('ob-analyze');
     s.classList.remove('active'); s.classList.add('exit');
     setTimeout(function() { s.classList.remove('exit'); }, 500);
-    setTimeout(function() { document.getElementById('ob-reveal').classList.add('active'); }, 80);
+    setTimeout(function() {
+      var reveal = document.getElementById('ob-reveal');
+      reveal.classList.add('active');
+      var rv = reveal.querySelector('video');
+      if (rv) { rv.currentTime = 0; rv.play().catch(function() {}); }
+    }, 80);
   }
 
   // Finish onboarding → enter app
@@ -4183,10 +4201,32 @@ let petSwitchOpen = false;
 
 function togglePetSwitch() {
   petSwitchOpen = !petSwitchOpen;
+  var stickyBar = document.getElementById('homeStickyBar');
+  var dropdown = document.getElementById('petSwitchDropdown');
+  var stickyVisible = stickyBar && stickyBar.classList.contains('visible');
+
   document.getElementById('petSwitchTrigger').classList.toggle('open', petSwitchOpen);
-  document.getElementById('petSwitchDropdown').classList.toggle('visible', petSwitchOpen);
-  document.getElementById('petSwitchBackdrop').classList.toggle('visible', petSwitchOpen);
   document.getElementById('petNameRow').style.zIndex = petSwitchOpen ? '200' : '';
+
+  // Position dropdown BEFORE making it visible to prevent jump
+  if (petSwitchOpen) {
+    var anchor;
+    if (stickyVisible) {
+      anchor = stickyBar;
+    } else {
+      anchor = document.getElementById('petSwitchTrigger');
+    }
+    if (anchor) {
+      var phoneFrame = document.querySelector('.phone-frame');
+      var frameRect = phoneFrame.getBoundingClientRect();
+      var anchorRect = anchor.getBoundingClientRect();
+      dropdown.style.top = (anchorRect.bottom - frameRect.top + 6) + 'px';
+    }
+  }
+
+  // Now toggle visibility after position is set
+  dropdown.classList.toggle('visible', petSwitchOpen);
+  document.getElementById('petSwitchBackdrop').classList.toggle('visible', petSwitchOpen);
 }
 
 function selectPet(el) {
@@ -4287,6 +4327,9 @@ function showScreen(id) {
   if (id === 'screen-care-processing') startAutoNavigation();
   // Autoplay videos on the newly active screen
   next.querySelectorAll('video[autoplay]').forEach(v => { v.play().catch(() => {}); });
+  // Hide sticky pet bar when leaving home screen
+  const stickyBar = document.getElementById('homeStickyBar');
+  if (stickyBar && id !== 'screen-home') stickyBar.classList.remove('visible');
 }
 
 function updateTabs(screenId) {
@@ -4901,7 +4944,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const petNameRow = document.getElementById('petNameRow');
 
   if (homeScreen) {
+    let scrollClamping = false; // Guard to prevent re-entrant scroll events
     homeScreen.addEventListener('scroll', function() {
+      if (scrollClamping) return;
       const scrollY = homeScreen.scrollTop;
 
       // ===== SCROLL CLAMP: 24px after last content, above tab bar =====
@@ -4918,7 +4963,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const tabH = 84;
         const maxScroll = contentBottom - homeScreen.clientHeight + tabH + 24;
         if (scrollY > maxScroll && maxScroll > 0) {
+          scrollClamping = true;
           homeScreen.scrollTop = maxScroll;
+          requestAnimationFrame(function() { scrollClamping = false; });
           return;
         }
       }
@@ -4934,6 +4981,17 @@ document.addEventListener('DOMContentLoaded', function() {
         heroLogo.style.opacity = opacity;
         if (heroActions) heroActions.style.opacity = opacity;
         if (heroTopGrad) heroTopGrad.style.opacity = opacity;
+      }
+
+      // Sticky pet name bar — show when pet name row is fully off-screen
+      const stickyBar = document.getElementById('homeStickyBar');
+      if (stickyBar && petNameRow) {
+        const petBottom = petNameRow.getBoundingClientRect().bottom;
+        if (petBottom <= 0) {
+          stickyBar.classList.add('visible');
+        } else {
+          stickyBar.classList.remove('visible');
+        }
       }
 
     });
